@@ -3,29 +3,22 @@ package br.com.alura.orgs.ui.activty
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
-//import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import br.com.alura.orgs.R
-import br.com.alura.orgs.dao.ProdutoDAO
+import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.ui.recyclerview.adapter.ListaProdutosAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import br.com.alura.orgs.databinding.ActivityListaProdutosBinding
-import br.com.alura.orgs.ui.dialog.FormularioImagemDialog
+
+private const val TAG = "ListaProdutosActivity"
 
 class ListaProdutosActivity : AppCompatActivity() {
-    private val dao = ProdutoDAO()
-    private val adapter = ListaProdutosAdapter(
-        context = this,
-        produtos = dao.buscaTodos()
-    )
+    private val adapter = ListaProdutosAdapter(context = this)
 
     private val binding by lazy {
         ActivityListaProdutosBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         configuraReciclerView()
@@ -34,7 +27,9 @@ class ListaProdutosActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        adapter.atualiza(dao.buscaTodos())
+        val db = AppDatabase.instancia(this)
+        val produtoDao = db.produtoDao()
+        adapter.atualiza(produtoDao.buscaTodos())
     }
 
     private fun configuraFab() {
@@ -64,6 +59,12 @@ class ListaProdutosActivity : AppCompatActivity() {
                 putExtra(CHAVE_PRODUTO, it)
             }
             startActivity(intent)
+        }
+        adapter.quandoClicaEmEditar = {
+            Log.i(TAG, "configuraRecyclerView: Editar $it")
+        }
+        adapter.quandoClicaEmRemover = {
+            Log.i(TAG, "configuraRecyclerView: Remover $it")
         }
     }
 }

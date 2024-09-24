@@ -2,15 +2,17 @@ package br.com.alura.orgs.ui.activty
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
+//import android.widget.Button
+//import android.widget.EditText
+//import androidx.appcompat.app.AlertDialog
+//import androidx.room.Room
 import br.com.alura.orgs.R
-import br.com.alura.orgs.dao.ProdutoDAO
+//import br.com.alura.orgs.dao.ProdutoDAO
+import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.model.Produto
 import java.math.BigDecimal
 import br.com.alura.orgs.databinding.ActivityFormularioProdutoBinding
-import br.com.alura.orgs.databinding.FormularioImagemBinding
+//import br.com.alura.orgs.databinding.FormularioImagemBinding
 import br.com.alura.orgs.extensions.tentaCarregarImagem
 import br.com.alura.orgs.ui.dialog.FormularioImagemDialog
 import coil.load
@@ -36,13 +38,20 @@ class FormularioProdutoActivity : AppCompatActivity(R.layout.activity_formulario
 
     private fun configuraBotaoSalvar() {
         val botaoSalvar = binding.activityFormularioProdutoBotaoSalvar
-        val dao = ProdutoDAO()
+//        val dao = ProdutoDAO()
+//        botaoSalvar.setOnClickListener {
+//            val produtoNovo = criaProduto()
+//            dao.adiciona(produtoNovo)
+//            finish()
+//        }
+
+        val db = AppDatabase.instancia(this)
+        val produtoDao = db.produtoDao()
+
         botaoSalvar.setOnClickListener {
             val produtoNovo = criaProduto()
-//            Log.i("FormularioProduto", "onCreate: $produtoNovo")
-            dao.adiciona(produtoNovo)
+            produtoDao.salva(produtoNovo)
             finish()
-//            Log.i("FormularioProduto", "onCreate: ${dao.buscaTodos()}")
         }
     }
 

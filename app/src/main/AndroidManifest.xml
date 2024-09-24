@@ -17,8 +17,8 @@
         <activity
             android:name=".ui.activty.DetalhesProdutoActivity"
             android:exported="false"
-            android:label="@string/title_activity_detalhes_produto"
-            android:theme="@style/Theme.Orgs.NoActionBar" />
+            android:label="@string/title_activity_detalhes_produto" />
+        <!--            android:theme="@style/Theme.Orgs.NoActionBar"-->
         <activity
             android:name=".ui.activty.ListaProdutosActivity"
             android:exported="true">
